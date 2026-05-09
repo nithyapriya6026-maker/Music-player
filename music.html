@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Mood Music Studio</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+    color:white;
+    text-align:center;
+}
+
+header{
+    padding:20px;
+    font-size:28px;
+    font-weight:bold;
+    background:rgba(0,0,0,0.4);
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:rgba(0,0,0,0.3);
+    padding:20px;
+    margin:15px auto;
+    border-radius:15px;
+    width:80%;
+}
+
+select,input,button{
+    padding:10px;
+    margin:8px;
+    border-radius:8px;
+    border:none;
+    font-size:15px;
+}
+
+button{
+    background:#ffcc00;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ffaa00;
+}
+
+.result{
+    margin-top:15px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.song{
+    background:rgba(255,255,255,0.1);
+    padding:12px;
+    margin:10px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.song:hover{
+    background:rgba(255,255,255,0.3);
+}
+
+audio{
+    width:80%;
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>🎵 AI Mood Music Studio</header>
+
+<div class="container">
+
+<!-- PREDICT MOOD -->
+<div class="card">
+
+<h3>🎧 Predict Mood From Two Songs</h3>
+
+<select id="song1">
+
+<option value="0.95,155,0.95">Arabic Kuthu - Tamil</option>
+<option value="0.90,148,0.90">Vaathi Coming - Tamil</option>
+<option value="0.82,138,0.82">Enjoy Enjaami - Tamil</option>
+<option value="0.65,118,0.65">Munbe Vaa - Tamil</option>
+<option value="0.35,80,0.35">Nenjukkul Peidhidum - Tamil</option>
+
+<option value="0.20,70,0.20">Blinding Lights - English</option>
+<option value="0.92,150,0.92">Uptown Funk - English</option>
+<option value="0.88,145,0.88">Can't Hold Us - English</option>
+<option value="0.30,75,0.30">Fix You - English</option>
+<option value="0.55,105,0.55">Perfect - English</option>
+
+<option value="0.85,140,0.85">Dynamite - Korean</option>
+<option value="0.88,142,0.88">Butter - Korean</option>
+
+<option value="0.50,100,0.50">Kesariya - Hindi</option>
+<option value="0.60,108,0.60">Tum Hi Ho - Hindi</option>
+
+<option value="0.80,135,0.80">Sunny Day - Chinese</option>
+
+<option value="0.60,110,0.60">Lemon - Japanese</option>
+
+<option value="0.90,150,0.90">Despacito - Spanish</option>
+
+</select>
+
+<select id="song2">
+
+<option value="0.95,155,0.95">Arabic Kuthu - Tamil</option>
+<option value="0.90,148,0.90">Vaathi Coming - Tamil</option>
+<option value="0.82,138,0.82">Enjoy Enjaami - Tamil</option>
+<option value="0.65,118,0.65">Munbe Vaa - Tamil</option>
+<option value="0.35,80,0.35">Nenjukkul Peidhidum - Tamil</option>
+
+<option value="0.20,70,0.20">Blinding Lights - English</option>
+<option value="0.92,150,0.92">Uptown Funk - English</option>
+<option value="0.88,145,0.88">Can't Hold Us - English</option>
+<option value="0.30,75,0.30">Fix You - English</option>
+<option value="0.55,105,0.55">Perfect - English</option>
+
+<option value="0.85,140,0.85">Dynamite - Korean</option>
+<option value="0.88,142,0.88">Butter - Korean</option>
+
+<option value="0.50,100,0.50">Kesariya - Hindi</option>
+<option value="0.60,108,0.60">Tum Hi Ho - Hindi</option>
+
+<option value="0.80,135,0.80">Sunny Day - Chinese</option>
+
+<option value="0.60,110,0.60">Lemon - Japanese</option>
+
+<option value="0.90,150,0.90">Despacito - Spanish</option>
+
+</select>
+
+<br>
+
+<button onclick="predictMood()">Predict Mood</button>
+
+<div class="result" id="prediction"></div>
+
+</div>
+
+<!-- BOOST -->
+<div class="card">
+
+<h3>🚀 Boost My Mood</h3>
+
+<button onclick="boostMood()">Boost Now</button>
+
+<div class="result" id="boost"></div>
+
+</div>
+
+<!-- MANUAL -->
+<div class="card">
+
+<h3>🧠 Select Your Current Mood</h3>
+
+<select id="manualMood">
+<option>Happy</option>
+<option>Sad</option>
+<option>Calm</option>
+<option>Energetic</option>
+<option>Stressed</option>
+</select>
+
+<button onclick="suggestSongs()">Suggest Songs</button>
+
+<div class="result" id="suggestions"></div>
+
+</div>
+
+<!-- MUSIC PLAYER -->
+<div class="card">
+
+<h3>🎶 Music Player</h3>
+
+<div class="song" onclick="playSong('songs/arabic_kuthu.mp3')">
+▶ Arabic Kuthu
+</div>
+
+<div class="song" onclick="playSong('songs/vaathi_coming.mp3')">
+▶ Vaathi Coming
+</div>
+
+<div class="song" onclick="playSong('songs/enjoy_enjaami.mp3')">
+▶ Enjoy Enjaami
+</div>
+
+<div class="song" onclick="playSong('songs/munbe_vaa.mp3')">
+▶ Munbe Vaa
+</div>
+
+<div class="song" onclick="playSong('songs/blinding_lights.mp3')">
+▶ Blinding Lights
+</div>
+
+<div class="song" onclick="playSong('songs/uptown_funk.mp3')">
+▶ Uptown Funk
+</div>
+
+<div class="song" onclick="playSong('songs/can't_hold_us.mp3')">
+▶ Can't Hold Us
+</div>
+
+<div class="song" onclick="playSong('songs/fix_you.mp3')">
+▶ Fix You
+</div>
+
+<div class="song" onclick="playSong('songs/perfect.mp3')">
+▶ Perfect
+</div>
+
+<div class="song" onclick="playSong('songs/dynamite.mp3')">
+▶ Dynamite
+</div>
+
+<div class="song" onclick="playSong('songs/butter.mp3')">
+▶ Butter
+</div>
+
+<div class="song" onclick="playSong('songs/kesariya.mp3')">
+▶ Kesariya
+</div>
+
+<div class="song" onclick="playSong('songs/tum_hi_ho.mp3')">
+▶ Tum Hi Ho
+</div>
+
+<div class="song" onclick="playSong('songs/sunny_day.mp3')">
+▶ Sunny Day
+</div>
+
+<div class="song" onclick="playSong('songs/lemon.mp3')">
+▶ Lemon
+</div>
+
+<div class="song" onclick="playSong('songs/despacito.mp3')">
+▶ Despacito
+</div>
+
+<audio id="audioPlayer" controls></audio>
+
+</div>
+
+</div>
+
+<script>
+
+// SONG DATABASE
+const moodSongs = {
+
+Happy:[
+"Uptown Funk",
+"Arabic Kuthu",
+"Vaathi Coming",
+"Dynamite",
+"Butter",
+"Despacito"
+],
+
+Sad:[
+"Fix You",
+"Tum Hi Ho",
+"Lemon",
+"Nenjukkul Peidhidum"
+],
+
+Calm:[
+"Perfect",
+"Munbe Vaa",
+"Sunny Day"
+],
+
+Energetic:[
+"Blinding Lights",
+"Can't Hold Us",
+"Enjoy Enjaami"
+],
+
+Stressed:[
+"Weightless",
+"Lovely",
+"Sunflower"
+]
+
+};
+
+let currentMood = "";
+
+// PREDICT MOOD
+function predictMood(){
+
+let s1 =
+document.getElementById("song1").value.split(",");
+
+let s2 =
+document.getElementById("song2").value.split(",");
+
+let energy =
+(parseFloat(s1[0]) + parseFloat(s2[0])) / 2;
+
+let tempo =
+(parseFloat(s1[1]) + parseFloat(s2[1])) / 2;
+
+let valence =
+(parseFloat(s1[2]) + parseFloat(s2[2])) / 2;
+
+if(energy > 0.75 && valence > 0.75){
+currentMood = "Energetic";
+}
+else if(valence < 0.4){
+currentMood = "Sad";
+}
+else if(energy < 0.5 && tempo < 90){
+currentMood = "Calm";
+}
+else{
+currentMood = "Happy";
+}
+
+document.getElementById("prediction").innerHTML =
+"Predicted Mood: " + currentMood +
+"<br><br>Suggested Songs:<br>" +
+moodSongs[currentMood].join("<br>");
+
+changeBackground(currentMood);
+
+}
+
+// BOOST MOOD
+function boostMood(){
+
+if(currentMood === ""){
+document.getElementById("boost").innerHTML =
+"Please predict your mood first!";
+return;
+}
+
+let boostList = moodSongs["Happy"];
+
+document.getElementById("boost").innerHTML =
+"To boost your mood try:<br><br>" +
+boostList.join("<br>");
+
+}
+
+// MANUAL MOOD
+function suggestSongs(){
+
+let mood =
+document.getElementById("manualMood").value;
+
+document.getElementById("suggestions").innerHTML =
+"Recommended Songs:<br><br>" +
+moodSongs[mood].join("<br>");
+
+changeBackground(mood);
+
+}
+
+// BACKGROUND CHANGE
+function changeBackground(mood){
+
+if(mood === "Happy"){
+document.body.style.background =
+"linear-gradient(135deg,#f6d365,#fda085)";
+}
+
+else if(mood === "Sad"){
+document.body.style.background =
+"linear-gradient(135deg,#4b79a1,#283e51)";
+}
+
+else if(mood === "Calm"){
+document.body.style.background =
+"linear-gradient(135deg,#a1c4fd,#c2e9fb)";
+}
+
+else if(mood === "Energetic"){
+document.body.style.background =
+"linear-gradient(135deg,#ff512f,#dd2476)";
+}
+
+else{
+document.body.style.background =
+"linear-gradient(135deg,#8360c3,#2ebf91)";
+}
+
+}
+
+// PLAY SONG
+function playSong(songFile){
+
+let player =
+document.getElementById("audioPlayer");
+
+player.src = songFile;
+
+player.play();
+
+}
+
+</script>
+
+</body>
+</html>	
