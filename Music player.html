@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Mood Music Studio</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    color: white;
+    text-align: center;
+}
+
+header {
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    background: rgba(0,0,0,0.4);
+}
+
+.container {
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    margin: 15px auto;
+    border-radius: 15px;
+    width: 80%;
+}
+
+select, input, button {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+}
+
+button {
+    background: #ffcc00;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ffaa00;
+}
+
+.result {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>🎵 AI Mood Music Studio</header>
+
+<div class="container">
+
+<!-- OPTION 1: Predict by 2 Songs -->
+<div class="card">
+<h3>🎧 Predict Mood From Two Songs</h3>
+
+<select id="song1">
+
+    <!-- Tamil -->
+    <option value="0.95,155,0.95">Arabic Kuthu - Tamil</option>
+    <option value="0.90,148,0.90">Vaathi Coming - Tamil</option>
+    <option value="0.82,138,0.82">Enjoy Enjaami - Tamil</option>
+    <option value="0.65,118,0.65">Munbe Vaa - Tamil</option>
+    <option value="0.35,80,0.35">Nenjukkul Peidhidum - Tamil</option>
+
+    <!-- English -->
+    <option value="0.20,70,0.20">Blinding Lights - English</option>
+    <option value="0.92,150,0.92">Uptown Funk - English</option>
+    <option value="0.88,145,0.88">Can't Hold Us - English</option>
+    <option value="0.30,75,0.30">Fix You - English</option>
+    <option value="0.55,105,0.55">Perfect - English</option>
+
+    <!-- Korean -->
+    <option value="0.85,140,0.85">Dynamite - Korean (BTS)</option>
+    <option value="0.88,142,0.88">Butter - Korean (BTS)</option>
+    <option value="0.84,136,0.84">Love Scenario - Korean</option>
+
+    <!-- Hindi -->
+    <option value="0.50,100,0.50">Kesariya - Hindi</option>
+    <option value="0.60,108,0.60">Tum Hi Ho - Hindi</option>
+    <option value="0.78,128,0.78">Kala Chashma - Hindi</option>
+
+    <!-- Chinese -->
+    <option value="0.80,135,0.80">Jay Chou - Chinese</option>
+    <option value="0.72,120,0.72">Love Confession - Chinese</option>
+
+    <!-- Japanese -->
+    <option value="0.60,110,0.60">Lemon - Japanese</option>
+    <option value="0.74,125,0.74">Gurenge - Japanese</option>
+    <option value="0.45,90,0.45">Sparkle - Japanese</option>
+
+    <!-- Spanish -->
+    <option value="0.90,150,0.90">Despacito - Spanish</option>
+
+</select>
+
+
+<select id="song2">
+
+    <!-- Tamil -->
+    <option value="0.95,155,0.95">Arabic Kuthu - Tamil</option>
+    <option value="0.90,148,0.90">Vaathi Coming - Tamil</option>
+    <option value="0.82,138,0.82">Enjoy Enjaami - Tamil</option>
+    <option value="0.65,118,0.65">Munbe Vaa - Tamil</option>
+    <option value="0.35,80,0.35">Nenjukkul Peidhidum - Tamil</option>
+
+    <!-- English -->
+    <option value="0.20,70,0.20">Blinding Lights - English</option>
+    <option value="0.92,150,0.92">Uptown Funk - English</option>
+    <option value="0.88,145,0.88">Can't Hold Us - English</option>
+    <option value="0.30,75,0.30">Fix You - English</option>
+    <option value="0.55,105,0.55">Perfect - English</option>
+
+    <!-- Korean -->
+    <option value="0.85,140,0.85">Dynamite - Korean (BTS)</option>
+    <option value="0.88,142,0.88">Butter - Korean (BTS)</option>
+    <option value="0.84,136,0.84">Love Scenario - Korean</option>
+
+    <!-- Hindi -->
+    <option value="0.50,100,0.50">Kesariya - Hindi</option>
+    <option value="0.60,108,0.60">Tum Hi Ho - Hindi</option>
+    <option value="0.78,128,0.78">Kala Chashma - Hindi</option>
+
+    <!-- Chinese -->
+    <option value="0.80,135,0.80">Jay Chou - Chinese</option>
+    <option value="0.72,120,0.72">Love Confession - Chinese</option>
+
+    <!-- Japanese -->
+    <option value="0.60,110,0.60">Lemon - Japanese</option>
+    <option value="0.74,125,0.74">Gurenge - Japanese</option>
+    <option value="0.45,90,0.45">Sparkle - Japanese</option>
+
+    <!-- Spanish -->
+    <option value="0.90,150,0.90">Despacito - Spanish</option>
+
+</select>
+<br>
+<button onclick="predictMood()">Predict Mood</button>
+
+<div class="result" id="prediction"></div>
+</div>
+
+<!-- OPTION 2: Boost Mood -->
+<div class="card">
+<h3>🚀 Boost My Mood</h3>
+<button onclick="boostMood()">Boost Now</button>
+<div class="result" id="boost"></div>
+</div>
+
+<!-- OPTION 3: Manual Mood Selection -->
+<div class="card">
+<h3>🧠 Select Your Current Mood</h3>
+
+<select id="manualMood">
+<option>Happy</option>
+<option>Sad</option>
+<option>Calm</option>
+<option>Energetic</option>
+<option>Stressed</option>
+</select>
+
+<button onclick="suggestSongs()">Suggest Songs</button>
+
+<div class="result" id="suggestions"></div>
+</div>
+
+</div>
+
+<script>
+
+// SONG DATABASE
+const moodSongs = {
+Happy: [    
+		"Uptown Funk - Bruno Mars",
+		"Shake It Off - Taylor Swift",
+		"Happy - Pharrell Williams",
+		"Arabic Kuthu - Tamil",
+		"Vaathi Coming - Tamil",
+		"Dynamite - BTS",
+		"Butter - BTS",
+		"Love Scenario - iKON",
+		"Kesariya - Hindi",
+		"Malang Sajna - Hindi",
+		"Despacito - Luis Fonsi",
+		"Gurenge - LiSA"
+	],
+Sad: [
+		"Someone Like You - Adele",
+		"Let Her Go - Passenger",
+		"Fix You - Coldplay",
+		"Lovely - Billie Eilish",
+		"Heather - Conan Gray",
+		"Tum Hi Ho - Hindi",
+		"Agar Tum Saath Ho - Hindi",
+		"Lemon - Kenshi Yonezu",
+		"Sparkle - RADWIMPS",
+		"Blue - Taeyeon",
+		"Nenjukkul Peidhidum - Tamil"
+	],
+Calm: [
+		"Until I Found You - Stephen Sanchez",
+		"Perfect - Ed Sheeran",
+		"Ocean Eyes - Billie Eilish",
+		"Photograph - Ed Sheeran",
+		"Munbe Vaa - Tamil",
+		"New York Nagaram - Tamil",
+		"Night Changes - One Direction",
+		"Suzume - RADWIMPS",
+		"Spring Day - BTS",
+		"Blue Jeans - Gangga"
+	],
+Energetic: [
+		"Blinding Lights - The Weeknd",
+		"Believer - Imagine Dragons",
+		"Can't Hold Us - Macklemore",
+		"Enemy - Imagine Dragons",
+		"Industry Baby - Lil Nas X",
+		"Arabic Kuthu - Tamil",
+		"Enjoy Enjaami - Tamil",
+		"How You Like That - BLACKPINK",
+		"Animals - Martin Garrix",
+		"Kala Chashma - Hindi"
+	],
+Stressed: [
+		"Weightless - Marconi Union",
+		"Sunflower - Post Malone",
+		"Lovely - Billie Eilish",
+		"Memories - Maroon 5",
+		"Paradise - Coldplay",
+		"Snowfall - Øneheart",
+		"Experience - Ludovico Einaudi",
+		"Spring Day - BTS",
+		"Blue - Taeyeon",
+		"Lemon - Kenshi Yonezu"
+	]
+};
+
+let currentMood = "";
+
+// PREDICT FROM 2 SONGS
+function predictMood() {
+
+let s1 = document.getElementById("song1").value.split(",");
+let s2 = document.getElementById("song2").value.split(",");
+
+let energy = (parseFloat(s1[0]) + parseFloat(s2[0])) / 2;
+let tempo = (parseFloat(s1[1]) + parseFloat(s2[1])) / 2;
+let valence = (parseFloat(s1[2]) + parseFloat(s2[2])) / 2;
+
+if (energy > 0.75 && valence > 0.75) {
+    currentMood = "Energetic";
+}
+else if (valence < 0.4) {
+    currentMood = "Sad";
+}
+else if (energy < 0.5 && tempo < 90) {
+    currentMood = "Calm";
+}
+else {
+    currentMood = "Happy";
+}
+
+document.getElementById("prediction").innerHTML =
+"Predicted Mood: " + currentMood +
+"<br>Suggested Songs:<br>" +
+moodSongs[currentMood].join("<br>");
+
+changeBackground(currentMood);
+}
+
+// BOOST MOOD FEATURE
+function boostMood() {
+
+if (currentMood === "") {
+    document.getElementById("boost").innerHTML =
+    "Please predict your mood first!";
+    return;
+}
+
+let boostList = moodSongs["Happy"];
+document.getElementById("boost").innerHTML =
+"To boost your mood, try:<br>" + boostList.join("<br>");
+}
+
+// MANUAL MOOD SELECTION
+function suggestSongs() {
+
+let mood = document.getElementById("manualMood").value;
+
+document.getElementById("suggestions").innerHTML =
+"Recommended Songs:<br>" +
+moodSongs[mood].join("<br>");
+
+changeBackground(mood);
+}
+
+// Dynamic Background Change
+function changeBackground(mood) {
+
+if (mood === "Happy")
+    document.body.style.background = "linear-gradient(135deg,#f6d365,#fda085)";
+else if (mood === "Sad")
+    document.body.style.background = "linear-gradient(135deg,#4b79a1,#283e51)";
+else if (mood === "Calm")
+    document.body.style.background = "linear-gradient(135deg,#a1c4fd,#c2e9fb)";
+else if (mood === "Energetic")
+    document.body.style.background = "linear-gradient(135deg,#ff512f,#dd2476)";
+else
+    document.body.style.background = "linear-gradient(135deg,#8360c3,#2ebf91)";
+}
+
+</script>
+
+</body>
+</html>
